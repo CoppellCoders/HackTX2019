@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/navigation_find"
-        android:icon="@drawable/find_nav"
+        android:icon="@drawable/ic_location_searching_black_24dp"
         android:title="Find" />
 
     <item
         android:id="@+id/navigation_list"
-        android:icon="@drawable/list_nav"
+        android:icon="@drawable/ic_add_location_black_24dp"
         android:title="List" />
 
 
