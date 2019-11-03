@@ -1,5 +1,7 @@
 package com.cc.parkx;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.api.Status;
@@ -58,6 +61,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
         PlacesClient placesClient = Places.createClient(getContext());
 
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
+
+        setLocation();
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteFragment.getView().setBackgroundColor(Color.WHITE);
@@ -126,6 +131,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+<<<<<<< HEAD
     private void done(boolean austin) throws JSONException {
         int start = 0;
         int end = 5;
@@ -144,10 +150,32 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
             });
         }
 
+=======
+    private void setLocation() {
+        locationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]
+                    {Manifest.permission.ACCESS_FINE_LOCATION}, 101);
+            setLocation();
+        } else {
+            locationProviderClient.getLastLocation()
+                    .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                            }
+                        }
+                    });
+        }
+>>>>>>> 0bbbb39193c6d3f62426cf5d1264827d49cd1b8a
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        System.out.println("000000");
         map = googleMap;
     }
 }
