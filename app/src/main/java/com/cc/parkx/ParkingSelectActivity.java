@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -16,8 +17,10 @@ public class ParkingSelectActivity extends AppCompatActivity {
 
     TextView name, dist, price, subtotal, fees, tax, total;
     double pricePerHour;
+    double lat, lng;
     ImageButton checkout;
     ImageButton contact;
+    ImageButton takeMe;
     ImageView done, topImg;
     NumberPicker np;
     String phoneNumber, title, dista, priceP, url;
@@ -25,6 +28,9 @@ public class ParkingSelectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parking_select);
+
+        lat = getIntent().getDoubleExtra("lat", 1);
+        lng = getIntent().getDoubleExtra("lng", 1);
 
         pricePerHour = getIntent().getDoubleExtra("price", .1);
         phoneNumber = getIntent().getStringExtra("phone") == null ? "6189175697" : getIntent().getStringExtra("phone");
@@ -85,7 +91,17 @@ public class ParkingSelectActivity extends AppCompatActivity {
         done.setVisibility(View.VISIBLE);
         contact.setVisibility(View.VISIBLE);
 
-        checkout.setVisibility(View.GONE);
+        checkout.setImageResource(R.drawable.takemetherebtn);
+        checkout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=" + Double.toString(lat) + "," + Double.toString(lng));
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
+            }
+        });
+
         np.setVisibility(View.GONE);
 
     }

@@ -15,7 +15,6 @@
         tools:layout_editor_absoluteY="355dp" />
 
 
-
     <fragment
         android:id="@+id/autocomplete_fragment"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
@@ -25,8 +24,8 @@
         android:layout_margin="10dp"
         map:layout_constraintBottom_toBottomOf="@+id/google_map"
         map:layout_constraintTop_toTopOf="@+id/google_map"
-        map:layout_constraintVertical_bias="0.75"
-        tools:layout_editor_absoluteX="0dp" />
+        map:layout_constraintVertical_bias="0.688"
+        tools:layout_editor_absoluteX="9dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/idRecyclerViewHorizontalList"
