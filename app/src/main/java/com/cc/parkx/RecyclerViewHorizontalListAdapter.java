@@ -34,13 +34,13 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
 
     @Override
     public void onBindViewHolder(final ParkingSpotViewHolder holder, final int position) {
-        current = parkingSpots.get(position);
         holder.price.setText(String.format("$%.2f", parkingSpots.get(position).price));
         holder.address.setText(parkingSpots.get(position).address);
         holder.distance.setText(String.format("%.2f", parkingSpots.get(position).distance) + " miles");
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                current = parkingSpots.get(position);
                 parkingSpots.get(position).map.animateCamera(CameraUpdateFactory.newLatLngZoom(parkingSpots.get(position).latLng, 19));
                 parkingSpots.get(position).reserve.setVisibility(View.VISIBLE);
             }

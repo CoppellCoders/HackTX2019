@@ -2,15 +2,24 @@ package com.cc.parkx;
 
 import android.content.Intent;
 import android.net.Uri;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class ParkingSelectActivity extends AppCompatActivity {
 
@@ -18,7 +27,9 @@ public class ParkingSelectActivity extends AppCompatActivity {
     double pricePerHour;
     ImageButton checkout;
     ImageButton contact;
+    Button datePickerL;
     ImageView done, topImg;
+    TextView hours;
     NumberPicker np;
     String phoneNumber, title, dista, priceP, url;
     @Override
@@ -44,6 +55,8 @@ public class ParkingSelectActivity extends AppCompatActivity {
         price = findViewById(R.id.price);
         dist = findViewById(R.id.distance);
         topImg = findViewById(R.id.top_img);
+        hours = findViewById(R.id.hours);
+        datePickerL = findViewById(R.id.date_picker);
         name.setText(title);
         dist.setText(dista);
         price.setText(priceP);
@@ -79,6 +92,35 @@ public class ParkingSelectActivity extends AppCompatActivity {
             }
         });
 
+        final View dialogView = View.inflate(getApplicationContext(), R.layout.date_time_picker, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(ParkingSelectActivity.this).create();
+
+        datePickerL.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                alertDialog.setView(dialogView);
+                alertDialog.show();
+            }});
+
+        dialogView.findViewById(R.id.date_time_set).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                DatePicker datePicker = (DatePicker) dialogView.findViewById(R.id.date_picker);
+                TimePicker timePicker = (TimePicker) dialogView.findViewById(R.id.time_picker);
+
+                Calendar calendar = new GregorianCalendar(datePicker.getYear(),
+                        datePicker.getMonth(),
+                        datePicker.getDayOfMonth(),
+                        timePicker.getCurrentHour(),
+                        timePicker.getCurrentMinute());
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy h:mm a");
+
+                datePickerL.setText(sdf.format(calendar.getTime()));
+                alertDialog.dismiss();
+            }});
+
     }
 
     private void changeStatus() {
@@ -87,6 +129,8 @@ public class ParkingSelectActivity extends AppCompatActivity {
 
         checkout.setVisibility(View.GONE);
         np.setVisibility(View.GONE);
+        hours.setVisibility(View.GONE);
+        datePickerL.setClickable(false);
 
     }
 
