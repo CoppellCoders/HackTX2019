@@ -48,7 +48,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
     private GoogleMap map;
     private SupportMapFragment mapFragment;
-    private FusedLocationProviderClient fusedLocationClient;
+    private FusedLocationProviderClient locationProviderClient;
     final JSONArray array = new JSONArray();
     @Nullable
     @Override
@@ -56,7 +56,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
         View view = inflater.inflate(R.layout.activity_maps, container, false);
         String apiKey = getString(R.string.google_api_key);
         super.onCreate(savedInstanceState);
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
         Places.initialize(getContext(), apiKey);
         PlacesClient placesClient = Places.createClient(getContext());
 
@@ -115,33 +114,20 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
         });
         mapFragment.getMapAsync(this);
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        Log.e("hahahaha", location.toString());
-                        if (location != null) {
-                            final LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                        }
-                    }
-                });
-
         return view;
     }
 
-<<<<<<< HEAD
+
     private void done(boolean austin) throws JSONException {
         int start = 0;
         int end = 5;
-        if(!austin) {
+        if (!austin) {
             start = 5;
             end = 10;
         }
-        for(int i = start; i < end; i++) {
+        for (int i = start; i < end; i++) {
             JSONObject object = (JSONObject) array.get(i);
-            final LatLng latLng = new LatLng((float)object.getDouble("lat"), (float)object.getDouble("long"));
+            final LatLng latLng = new LatLng((float) object.getDouble("lat"), (float) object.getDouble("long"));
             Log.e("hahah", latLng.toString());
             getActivity().runOnUiThread(new Runnable() {
                 public void run() {
@@ -149,8 +135,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                 }
             });
         }
+    }
 
-=======
     private void setLocation() {
         locationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
         if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -170,7 +156,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                         }
                     });
         }
->>>>>>> 0bbbb39193c6d3f62426cf5d1264827d49cd1b8a
     }
 
     @Override
