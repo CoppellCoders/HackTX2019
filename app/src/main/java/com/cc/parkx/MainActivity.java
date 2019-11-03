@@ -15,6 +15,10 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import android.view.Gravity;
+import androidx.core.view.GravityCompat;
+import android.widget.ImageButton;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -23,8 +27,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,25 +37,17 @@ public class MainActivity extends AppCompatActivity
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-       /* MongoClientURI uri = new MongoClientURI(
-                "mongodb://cc:cc@cluster0-shard-00-00-zme9k.azure.mongodb.net:27017,cluster0-shard-00-01-zme9k.azure.mongodb.net:27017,cluster0-shard-00-02-zme9k.azure.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&&w=majority");
+        ImageButton hamMenu = findViewById(R.id.ham_menu);
 
-        MongoClient mongoClient = new MongoClient(uri);
-        MongoDatabase database = mongoClient.getDatabase("data");
-        final Document doc = new Document("name", "test")
-                .append("time", System.currentTimeMillis());
-        final MongoCollection<Document> locations = database.getCollection("locations");
-        new Thread(new Runnable() {
+        hamMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                locations.insertOne(doc);
+            public void onClick(View v) {
+                DrawerLayout navDrawer = findViewById(R.id.drawer_layout);
+                // If the navigation drawer is not open then open it, if its already open then close it.
+                if(!navDrawer.isDrawerOpen(Gravity.START)) navDrawer.openDrawer(Gravity.START);
+                else navDrawer.closeDrawer(Gravity.END);
             }
-        }).start();*/
+        });
 
 
     }
@@ -97,11 +91,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+          startActivity(new Intent(MainActivity.this, MapsActivity.class));
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(MainActivity.this, MapsActivity.class));
+            startActivity(new Intent(MainActivity.this, ListParkingSpot.class));
         } else if (id == R.id.nav_slideshow) {
-
+            startActivity(new Intent(MainActivity.this, ParkingSelectActivity.class));
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {
