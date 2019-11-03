@@ -74,34 +74,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                 // TODO: Get info about the selected place.
                 Log.i("MapActivity", "Place: " + place.getName() + ", " + place.getLatLng());
                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
-                MongoClientURI uri = new MongoClientURI(
-                        "mongodb://cc:cc@cluster0-shard-00-00-zme9k.azure.mongodb.net:27017,cluster0-shard-00-01-zme9k.azure.mongodb.net:27017,cluster0-shard-00-02-zme9k.azure.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&&w=majority");
-
-                final Block<Document> printBlock = new Block<Document>() {
-                    @Override
-                    public void apply(final Document document) {
-                        try {
-                            array.put(new JSONObject(document.toJson()));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                MongoClient mongoClient = new MongoClient(uri);
-                MongoDatabase database = mongoClient.getDatabase("data");
-                final MongoCollection<Document> collection = database.getCollection("locations");
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        collection.find().forEach(printBlock);
-                        try {
-                            done(place.getLatLng().latitude < 31);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }).start();
+                addMarkersFromDB();
 
 
             }
@@ -160,7 +133,38 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        System.out.println("000000");
         map = googleMap;
+        addMarkersFromDB();
     }
+
+    public void addMarkersFromDB() {
+        final Block<Document> printBlock = new Block<Document>() {
+            @Override
+            public void apply(final Document document) {
+                try {
+                    array.put(new JSONObject(document.toJson()));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        MongoClientURI uri = new MongoClientURI(
+                "mongodb://cc:cc@cluster0-shard-00-00-zme9k.azure.mongodb.net:27017,cluster0-shard-00-01-zme9k.azure.mongodb.net:27017,cluster0-shard-00-02-zme9k.azure.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&&w=majority");
+
+        MongoClient mongoClient = new MongoClient(uri);
+        MongoDatabase database = mongoClient.getDatabase("data");
+        final MongoCollection<Document> collection = database.getCollection("locations");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                collection.find().forEach(printBlock);
+                try {
+                    done(true);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
 }
