@@ -1,26 +1,22 @@
 package com.cc.parkx;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import android.view.Gravity;
 import android.view.View;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
+import androidx.core.view.GravityCompat;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
+import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
-
-import com.mongodb.MongoClient;
-import com.mongodb.MongoClientURI;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-
-import org.bson.Document;
+import android.widget.ImageButton;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -29,8 +25,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,25 +35,18 @@ public class MainActivity extends AppCompatActivity
         });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
-        MongoClientURI uri = new MongoClientURI(
-                "mongodb://cc:cc@cluster0-shard-00-00-zme9k.azure.mongodb.net:27017,cluster0-shard-00-01-zme9k.azure.mongodb.net:27017,cluster0-shard-00-02-zme9k.azure.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&&w=majority");
+        ImageButton hamMenu = findViewById(R.id.ham_menu);
 
-        MongoClient mongoClient = new MongoClient(uri);
-        MongoDatabase database = mongoClient.getDatabase("data");
-        final Document doc = new Document("name", "test")
-                .append("time", System.currentTimeMillis());
-        final MongoCollection<Document> locations = database.getCollection("locations");
-        new Thread(new Runnable() {
+        hamMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                locations.insertOne(doc);
+            public void onClick(View v) {
+                DrawerLayout navDrawer = findViewById(R.id.drawer_layout);
+                // If the navigation drawer is not open then open it, if its already open then close it.
+                if(!navDrawer.isDrawerOpen(Gravity.START)) navDrawer.openDrawer(Gravity.START);
+                else navDrawer.closeDrawer(Gravity.END);
             }
-        }).start();
+        });
+        navigationView.setNavigationItemSelectedListener(this);
 
 
     }
@@ -105,9 +92,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
+            startActivity(new Intent(MainActivity.this, ListParkingSpot.class));
 
         } else if (id == R.id.nav_slideshow) {
-
+            startActivity(new Intent(MainActivity.this, ParkingSelectActivity.class));
         } else if (id == R.id.nav_tools) {
 
         } else if (id == R.id.nav_share) {

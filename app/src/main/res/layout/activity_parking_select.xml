@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ParkingSelectActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:src="@color/design_default_color_primary_dark"
+        android:layout_height="100dp">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/title_check"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:text="Austin Parking Spot"
+        android:textColor="#616161"
+        android:textSize="25dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="$0.05/hour"
+        android:textColor="#616161"
+        android:textSize="20dp" />
+    <TextView
+        android:id="@+id/distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:text="1 mile"
+        android:textColor="#616161"
+        android:textSize="20dp" />
+    <ImageView
+        android:id="@+id/parking_res"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:background="@drawable/parking_res"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scrollbarSize="10dp" />
+
+    <ImageButton
+        android:id="@+id/contact"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/contact_owner"
+        android:gravity="center"
+        android:paddingBottom="10dp" />
+    <NumberPicker
+        android:id="@+id/numberPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:scrollbarSize="10dp" />
+
+    <TextView
+        android:id="@+id/hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Hours "
+        android:textColor="#616161"
+        android:textSize="20dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="45dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha=".6"
+            android:text="Subtotal"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/check_subtotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="$160.00"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:alpha=".6"
+            android:text="Fees"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/check_fees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="25dp"
+            android:text="$0.00"
+            android:textSize="16dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:alpha=".6"
+            android:text="Tax"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/check_tax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="50dp"
+            android:text="$0.00"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="78dp"
+            android:background="@drawable/line_payment" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:alpha=".6"
+            android:text="Total"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/check_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="90dp"
+            android:text="$0.00"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/credit_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/creditcard_select"
+        android:gravity="center" />
+    <ImageButton
+        android:id="@+id/check_checkout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/checkoutbtn"
+        android:gravity="center"
+        android:paddingBottom="10dp" />
+
+</LinearLayout>

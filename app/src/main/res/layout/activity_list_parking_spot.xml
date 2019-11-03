@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ListParkingSpot">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="List Parking Spot"
+        android:textColor="#616161"
+        android:textSize="31dp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/add_img"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/validate_id"
+        android:layout_height="wrap_content">
+    </ImageView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add image"
+        android:layout_gravity="center"
+        android:textColor="#616161"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/location_select"
+        android:layout_width="362dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/searchbox"
+        android:drawableLeft="@drawable/loc_icon"
+        android:drawablePadding="10dp"
+        android:focusable="false"
+        android:hint="Address"
+        android:paddingLeft="20dp"
+        android:textColor="#434343"
+        android:textColorHint="#606060" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/searchbox"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:textColor="#434343"
+        android:drawableLeft="@drawable/name_icon"
+        android:paddingLeft="20dp"
+        android:drawablePadding="10dp"
+        android:id="@+id/add_name"
+        android:textColorHint="#606060"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/searchbox"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:textColor="#434343"
+        android:drawableLeft="@drawable/price_icon"
+        android:drawablePadding="10dp"
+        android:paddingLeft="20dp"
+        android:id="@+id/add_price"
+        android:textColorHint="#606060"
+        android:hint="Price"
+        android:inputType="numberDecimal"
+        />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/searchbox"
+        android:layout_marginRight="25dp"
+        android:layout_marginLeft="25dp"
+        android:textColor="#434343"
+        android:drawablePadding="10dp"
+        android:drawableLeft="@drawable/walking_icon"
+        android:paddingLeft="20dp"
+        android:id="@+id/add_spot"
+        android:textColorHint="#606060"
+        android:hint="Spots Opened"
+        android:inputType="number"
+        />
+
+
+
+
+
+    <ImageButton
+        android:id="@+id/add_space"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/list_space_btn"
+        android:gravity="center"
+        android:paddingBottom="10dp" />
+
+</LinearLayout>
