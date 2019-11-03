@@ -17,20 +17,29 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class Home extends AppCompatActivity {
 
+    boolean firstOpened = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        final BottomNavigationView navView = findViewById(R.id.nav_view);
         switchToFragment1();
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch(menuItem.getItemId()){
                     case R.id.navigation_find:
-                       switchToFragment1();
+                        if(!firstOpened) {
+                            switchToFragment1();
+                            firstOpened = true;
+                        }
+
                        return true;
                     case R.id.navigation_list:
+                        if(firstOpened) {
+                            switchToFragment2();
+                            firstOpened = false;
+                        }
                         return true;
                 }
                 return false;
@@ -51,6 +60,11 @@ public class Home extends AppCompatActivity {
     public void switchToFragment1() {
         FragmentManager manager = getSupportFragmentManager();
         manager.beginTransaction().replace(R.id.content, new MapsActivity()).commit();
+    }
+
+    public void switchToFragment2() {
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.content, new ListParkingSpot()).commit();
     }
 
     @Override

@@ -8,6 +8,7 @@
     tools:context=".ParkingSelectActivity">
 
     <ImageView
+        android:id="@+id/top_img"
         android:layout_width="match_parent"
         android:src="@color/design_default_color_primary_dark"
         android:layout_height="100dp">

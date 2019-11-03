@@ -8,6 +8,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<RecyclerViewHorizontalListAdapter.ParkingSpotViewHolder>{
     private List<ParkingSpot> parkingSpots;
     Context context;
+    public ParkingSpot current;
 
     public RecyclerViewHorizontalListAdapter(List<ParkingSpot> parkingSpots, Context context){
         this.parkingSpots = parkingSpots;
@@ -31,13 +34,15 @@ public class RecyclerViewHorizontalListAdapter extends RecyclerView.Adapter<Recy
 
     @Override
     public void onBindViewHolder(final ParkingSpotViewHolder holder, final int position) {
+        current = parkingSpots.get(position);
         holder.price.setText(String.format("$%.2f", parkingSpots.get(position).price));
         holder.address.setText(parkingSpots.get(position).address);
         holder.distance.setText(String.format("%.2f", parkingSpots.get(position).distance) + " miles");
         holder.container.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "This", Toast.LENGTH_SHORT).show();
+                parkingSpots.get(position).map.animateCamera(CameraUpdateFactory.newLatLngZoom(parkingSpots.get(position).latLng, 19));
+                parkingSpots.get(position).reserve.setVisibility(View.VISIBLE);
             }
         });
 

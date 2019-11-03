@@ -10,15 +10,17 @@ import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class ParkingSelectActivity extends AppCompatActivity {
 
-    TextView subtotal, fees, tax, total;
+    TextView name, dist, price, subtotal, fees, tax, total;
     double pricePerHour;
     ImageButton checkout;
     ImageButton contact;
-    ImageView done;
+    ImageView done, topImg;
     NumberPicker np;
-    String phoneNumber;
+    String phoneNumber, title, dista, priceP, url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +28,10 @@ public class ParkingSelectActivity extends AppCompatActivity {
 
         pricePerHour = getIntent().getDoubleExtra("price", .1);
         phoneNumber = getIntent().getStringExtra("phone") == null ? "6189175697" : getIntent().getStringExtra("phone");
+        title = getIntent().getStringExtra("name") == null ? "Jake's Tire Shop" : getIntent().getStringExtra("name");
+        dista = getIntent().getStringExtra("dist") == null ? ".22 miles" : (getIntent().getStringExtra("dist") + " miles");
+        priceP = String.format("$%.2f", pricePerHour) + "/hr";
+        url = getIntent().getStringExtra("img") == null ? "https://houseofhouston.com/wp-content/blogs.dir/279/files/2014/10/IMG_41361.jpg" : (getIntent().getStringExtra("img"));
 
         subtotal = findViewById(R.id.check_subtotal);
         fees = findViewById(R.id.check_fees);
@@ -34,6 +40,16 @@ public class ParkingSelectActivity extends AppCompatActivity {
         checkout = findViewById(R.id.check_checkout);
         contact = findViewById(R.id.contact);
         done = findViewById(R.id.parking_res);
+        name = findViewById(R.id.title_check);
+        price = findViewById(R.id.price);
+        dist = findViewById(R.id.distance);
+        topImg = findViewById(R.id.top_img);
+        name.setText(title);
+        dist.setText(dista);
+        price.setText(priceP);
+        Picasso.get()
+                .load(Uri.parse(url)).fit().centerCrop()
+                .into(topImg);
 
         np = findViewById(R.id.numberPicker);
         np.setMinValue(1);
@@ -76,8 +92,8 @@ public class ParkingSelectActivity extends AppCompatActivity {
 
     public void setSubtotal(int hours) {
         subtotal.setText(String.format("$%.2f", hours * pricePerHour));
-        fees.setText("$0.15");
+        fees.setText(String.format("$%.2f", hours * pricePerHour * .01));
         tax.setText(String.format("$%.2f", hours * pricePerHour * .02));
-        total.setText(String.format("$%.2f", hours * pricePerHour * .02 + .15 + hours * pricePerHour));
+        total.setText(String.format("$%.2f", hours * pricePerHour * .02 + hours * pricePerHour * .01 + hours * pricePerHour));
     }
 }

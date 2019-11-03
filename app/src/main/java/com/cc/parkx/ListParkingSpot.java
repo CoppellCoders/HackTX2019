@@ -1,7 +1,11 @@
 package com.cc.parkx;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +20,9 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -52,23 +58,27 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Random;
 
-public class ListParkingSpot extends AppCompatActivity {
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
+
+public class ListParkingSpot extends Fragment {
 
     EditText text, price, name, spots;
     Place good;
     ImageView add_img;
     Uri outputFileUri;
 
+
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_parking_spot);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.activity_list_parking_spot, container, false);
         final String[] keys = new String[]{"lat", "long", "price", "name", "img", "spots", "phone"};
-        ImageButton add = findViewById(R.id.add_space);
+        ImageButton add = view.findViewById(R.id.add_space);
         // Initialize the SDK
-        Places.initialize(getApplicationContext(), "AIzaSyAL11387Go5npXaOZQQKFc-Jh6EWwcCE84");
-        text = findViewById(R.id.location_select);
-        add_img = findViewById(R.id.add_img);
+        Places.initialize(getContext(), "AIzaSyAL11387Go5npXaOZQQKFc-Jh6EWwcCE84");
+        text = view.findViewById(R.id.location_select);
+        add_img = view.findViewById(R.id.add_img);
         add_img.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,17 +87,17 @@ public class ListParkingSpot extends AppCompatActivity {
         });
 
 
-        price = findViewById(R.id.add_price);
-        name = findViewById(R.id.add_name);
-        spots = findViewById(R.id.add_spot);
+        price = view.findViewById(R.id.add_price);
+        name = view.findViewById(R.id.add_name);
+        spots = view.findViewById(R.id.add_spot);
 // Create a new Places client instance
-        final PlacesClient placesClient = Places.createClient(this);
+        final PlacesClient placesClient = Places.createClient(getContext());
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 addToDB(keys, new String[]{String.valueOf(good.getLatLng().latitude),
                         String.valueOf(good.getLatLng().longitude),
-                        price.getText().toString(), name.getText().toString(), outputFileUri.toString(), spots.getText().toString(),
+                        price.getText().toString(), name.getText().toString(), "https://i.gyazo.com/e85ad29cf45ff7a74b7f8593bbb4720b.png", spots.getText().toString(),
                         genPhoneNumber()});
             }
         });
@@ -95,11 +105,11 @@ public class ListParkingSpot extends AppCompatActivity {
         text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)).build(getApplicationContext());
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, Arrays.asList(Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ADDRESS)).build(getActivity());
                 startActivityForResult(intent, 69);
             }
         });
-
+        return view;
     }
 
     private String genPhoneNumber() {
@@ -117,7 +127,7 @@ public class ListParkingSpot extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 69) {
             if (resultCode == RESULT_OK) {
                 good = Autocomplete.getPlaceFromIntent(data);
@@ -130,7 +140,7 @@ public class ListParkingSpot extends AppCompatActivity {
             }
         } if (requestCode == 0 && resultCode == RESULT_OK) {
                     Picasso.get()
-                            .load(outputFileUri).fit()
+                            .load(outputFileUri).fit().centerCrop()
                             .into(add_img);
                 }
             }
@@ -148,7 +158,7 @@ public class ListParkingSpot extends AppCompatActivity {
             newfile.createNewFile();
         } catch (IOException e) {}
 
-        outputFileUri =  FileProvider.getUriForFile(getApplicationContext(), getApplication().getApplicationContext().getPackageName() + ".provider",newfile);
+        outputFileUri =  FileProvider.getUriForFile(getContext(), getActivity().getApplicationContext().getPackageName() + ".provider",newfile);
         Log.e("work", outputFileUri.toString());
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -177,8 +187,9 @@ public class ListParkingSpot extends AppCompatActivity {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getApplicationContext(), "Added listing!", Toast.LENGTH_SHORT).show();
-                onBackPressed();
+                Toast.makeText(getActivity(), "Added listing!", Toast.LENGTH_SHORT).show();
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.content, new MapsActivity()).commit();
             }
         });
     }
