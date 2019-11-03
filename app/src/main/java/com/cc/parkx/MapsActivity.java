@@ -58,7 +58,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
     private RecyclerViewHorizontalListAdapter adapter;
     private RecyclerView recyclerView;
     private List<ParkingSpot> parkingSpots = new ArrayList<>();
-
+    Place place;
+    LatLng currentLatLng;
 
     @Nullable
     @Override
@@ -85,7 +86,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(final Place place) {
+            public void onPlaceSelected(final Place p) {
+                place = p;
                 map.clear();
                 // TODO: Get info about the selected place.
                 Log.i("MapActivity", "Place: " + place.getName() + ", " + place.getLatLng());
@@ -107,22 +109,19 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
     }
 
 
-    private void done(boolean austin) throws JSONException {
-        int start = 0;
-        int end = 5;
-        if (!austin) {
-            start = 5;
-            end = 10;
-        }
-        for (int i = start; i < end; i++) {
+    private void done() throws JSONException {
+        for (int i = 0; i < array.length(); i++) {
             JSONObject object = (JSONObject) array.get(i);
             final LatLng latLng = new LatLng((float) object.getDouble("lat"), (float) object.getDouble("long"));
             Log.e("hahah", latLng.toString());
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_logo)));
-                }
-            });
+            if (distance(latLng, place==null?currentLatLng:place.getLatLng()) <= 3) {
+                Log.e("xd", String.valueOf(distance(latLng, place==null?currentLatLng:place.getLatLng())));
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        map.addMarker(new MarkerOptions().position(latLng).icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_logo)));
+                    }
+                });
+            }
         }
     }
 
@@ -139,8 +138,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                         public void onSuccess(Location location) {
                             // Got last known location. In some rare situations this can be null.
                             if (location != null) {
-                                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                                currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
                             }
                         }
                     });
@@ -175,12 +174,30 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
             public void run() {
                 collection.find().forEach(printBlock);
                 try {
-                    done(true);
+                    done();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
+    }
+
+    private static double distance(LatLng ll1, LatLng ll2) {
+        double lat1 = ll1.latitude;
+        double lat2 = ll2.latitude;
+        double lon1 = ll1.longitude;
+        double lon2 = ll2.longitude;
+        if ((lat1 == lat2) && (lon1 == lon2)) {
+            return 0;
+        }
+        else {
+            double theta = lon1 - lon2;
+            double dist = Math.sin(Math.toRadians(lat1)) * Math.sin(Math.toRadians(lat2)) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.cos(Math.toRadians(theta));
+            dist = Math.acos(dist);
+            dist = Math.toDegrees(dist);
+            dist = dist * 60 * 1.1515;
+            return (dist);
+        }
     }
 
 }
