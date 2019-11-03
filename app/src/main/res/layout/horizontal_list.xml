@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/hori_background"
+    android:layout_width="wrap_content"
+    android:id="@+id/container_recy"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/loc_icon"
+            android:layout_height="wrap_content">
+        </ImageView>
+        <TextView
+            android:id="@+id/add_recy"
+            android:layout_width="wrap_content"
+            android:text="Short Address"
+            android:layout_marginTop="18dp"
+            android:layout_marginLeft="5dp"
+            android:textSize="12dp"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/moneyi"
+            android:layout_height="wrap_content">
+        </ImageView>
+        <TextView
+            android:id="@+id/price_recy"
+            android:layout_width="wrap_content"
+            android:text="Short Address"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="2dp"
+            android:textSize="12dp"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginTop="-5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/walking_icon"
+            android:layout_height="wrap_content">
+        </ImageView>
+        <TextView
+            android:id="@+id/distance_recy"
+            android:layout_width="wrap_content"
+            android:text="Short Address"
+            android:layout_marginTop="6dp"
+            android:layout_marginLeft="2dp"
+            android:textSize="12dp"
+            android:layout_height="wrap_content">
+        </TextView>
+    </LinearLayout>
+</LinearLayout>

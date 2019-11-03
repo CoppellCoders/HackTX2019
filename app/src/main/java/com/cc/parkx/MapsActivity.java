@@ -14,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -42,7 +45,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
@@ -50,6 +55,11 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
     private SupportMapFragment mapFragment;
     private FusedLocationProviderClient locationProviderClient;
     final JSONArray array = new JSONArray();
+    private RecyclerViewHorizontalListAdapter adapter;
+    private RecyclerView recyclerView;
+    private List<ParkingSpot> parkingSpots = new ArrayList<>();
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,10 +68,16 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         Places.initialize(getContext(), apiKey);
         PlacesClient placesClient = Places.createClient(getContext());
-
         mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.google_map);
-
         setLocation();
+
+        recyclerView = view.findViewById(R.id.idRecyclerViewHorizontalList);
+        // add a divider after each item for more clarity
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.HORIZONTAL));
+        adapter = new RecyclerViewHorizontalListAdapter(parkingSpots, getContext());
+        LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(horizontalLayoutManager);
+        recyclerView.setAdapter(adapter);
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment) getChildFragmentManager().findFragmentById(R.id.autocomplete_fragment);
         autocompleteFragment.getView().setBackgroundColor(Color.WHITE);
