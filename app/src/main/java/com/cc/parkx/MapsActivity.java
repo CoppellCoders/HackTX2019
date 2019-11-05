@@ -118,6 +118,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                 i.putExtra("dist", adapter.current.distance);
                 i.putExtra("img", adapter.current.url);
                 i.putExtra("phone", adapter.current.phone);
+                i.putExtra("lat", adapter.current.latLng.latitude);
+                i.putExtra("lng", adapter.current.latLng.longitude);
                 getActivity().startActivity(i);
             }
         });
